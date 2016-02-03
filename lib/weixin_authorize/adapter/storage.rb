@@ -25,6 +25,7 @@ module WeixinAuthorize
       auth_result = http_get_access_token
       auth = false
       if auth_result.is_ok?
+        @_auth_result = auth_result.result
         set_access_token_for_client(auth_result.result)
         auth = true
       end
@@ -33,7 +34,7 @@ module WeixinAuthorize
 
     def refresh_token
       handle_valid_exception
-      set_access_token_for_client
+      @_auth_result
     end
 
     def access_token
