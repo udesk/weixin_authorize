@@ -47,15 +47,15 @@ module WeixinAuthorize
     end
 
     def plain_endpoint
-      "https://api.weixin.qq.com/cgi-bin"
+      "http://api.weixin.udesk.cn:9001/cgi-bin"
     end
 
     def file_endpoint
-      "http://file.api.weixin.qq.com/cgi-bin"
+      "http://file.api.weixin.udesk.cn:9001/cgi-bin"
     end
 
     def mp_endpoint(url)
-      "https://mp.weixin.qq.com/cgi-bin#{url}"
+      "http://mp.weixin.udesk.cn:9001/cgi-bin#{url}"
     end
 
   end
