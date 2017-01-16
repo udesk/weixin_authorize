@@ -50,19 +50,19 @@ module WeixinAuthorize
     def plain_endpoint
       UDESK_PROXY ? \
         "http://api.weixin.udesk.cn:9001/cgi-bin" : \
-        "http://api.weixin.qq.com/cgi-bin"
+        "https://api.weixin.qq.com/cgi-bin"
     end
 
     def file_endpoint
       UDESK_PROXY ? \
         "http://file.api.weixin.udesk.cn:9002/cgi-bin" : \
-        "http://file.api.weixin.qq.com/cgi-bin"
+        "https://file.api.weixin.qq.com/cgi-bin"
     end
 
     def mp_endpoint(url)
       UDESK_PROXY ? \
         "http://mp.weixin.udesk.cn:9003/cgi-bin#{url}" : \
-        "http://mp.weixin.qq.com/cgi-bin#{url}"
+        "https://mp.weixin.qq.com/cgi-bin#{url}"
     end
 
   end
