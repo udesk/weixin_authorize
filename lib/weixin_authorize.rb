@@ -20,7 +20,7 @@ module WeixinAuthorize
   OK_MSG     = "ok".freeze
   OK_CODE    = 0.freeze
   GRANT_TYPE = "client_credential".freeze
-  UDESK_PROXY = !ENV["UDESK_PROXY"].nil?
+  UDESK_PROXY_ENV = !ENV["UDESK_PROXY_ENV"].nil?
 
   class << self
 
@@ -48,21 +48,27 @@ module WeixinAuthorize
     end
 
     def plain_endpoint
-      UDESK_PROXY ? \
+      need_proxy? ? \
         "http://api.weixin.udesk.cn:9001/cgi-bin" : \
         "https://api.weixin.qq.com/cgi-bin"
     end
 
     def file_endpoint
-      UDESK_PROXY ? \
+      need_proxy? ? \
         "http://file.api.weixin.udesk.cn:9002/cgi-bin" : \
         "https://file.api.weixin.qq.com/cgi-bin"
     end
 
     def mp_endpoint(url)
-      UDESK_PROXY ? \
+      need_proxy? ? \
         "http://mp.weixin.udesk.cn:9003/cgi-bin#{url}" : \
         "https://mp.weixin.qq.com/cgi-bin#{url}"
+    end
+    def proxy=(val)
+      @need_proxy=val
+    end
+    def need_proxy?
+      @need_proxy || UDESK_PROXY_ENV
     end
 
   end
