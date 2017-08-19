@@ -20,18 +20,22 @@ module WeixinAuthorize
   OK_MSG     = "ok".freeze
   OK_CODE    = 0.freeze
   GRANT_TYPE = "client_credential".freeze
+  TIMEOUT = 15
 
   class << self
 
     def http_get_without_token(url, headers={}, endpoint="plain")
       get_api_url = endpoint_url(endpoint, url)
-      load_json(RestClient.get(get_api_url, :params => headers))
+      args = { method: :get, url: get_api_url, open_timeout: TIMEOUT, timeout: TIMEOUT}.merge({headers: headers})
+      # load_json(RestClient.get(get_api_url, :params => headers))
+      load_json( RestClient::Request.execute(args) )
     end
 
     def http_post_without_token(url, payload={}, headers={}, endpoint="plain")
       post_api_url = endpoint_url(endpoint, url)
       payload = JSON.dump(payload) if endpoint == "plain" # to json if invoke "plain"
-      load_json(RestClient.post(post_api_url, payload, :params => headers))
+      args = { method: :post, url: post_api_url, payload: payload, open_timeout: TIMEOUT, timeout: TIMEOUT}.merge({headers: headers})
+      load_json( RestClient::Request.execute(args) )
     end
 
     # return hash
