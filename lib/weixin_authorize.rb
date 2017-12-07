@@ -53,7 +53,8 @@ module WeixinAuthorize
     end
 
     def file_endpoint
-      "http://file.api.weixin.qq.com/cgi-bin"
+      # client.upload_media 使用
+      "https://file.api.weixin.qq.com/cgi-bin"
     end
 
     def mp_endpoint(url)
