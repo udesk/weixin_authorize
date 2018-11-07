@@ -14,13 +14,17 @@ module WeixinAuthorize
     attr_accessor :app_id, :app_secret, :expired_at # Time.now + expires_in
     attr_accessor :access_token, :redis_key
     attr_accessor :storage
+    attr_accessor :disguise
+    attr_accessor :disguise_url
 
-    def initialize(app_id, app_secret, redis_key=nil)
+    def initialize(app_id, app_secret, disguise = false, disguise_url = nil, redis_key=nil)
       @app_id     = app_id
       @app_secret = app_secret
       @expired_at = Time.now.to_i
       @redis_key  = security_redis_key((redis_key || "weixin_" + app_id))
       @storage    = Storage.init_with(self)
+      @disguise   = disguise
+      @disguise_url = disguise_url
     end
 
     # return token
@@ -41,11 +45,17 @@ module WeixinAuthorize
 
       def http_get(url, headers={}, endpoint="plain")
         headers = headers.merge(access_token_param)
+        if @disguise && !@disguise_url.nil?
+          return WeixinAuthorize.http_get_disguise_url(@disguise_url, headers)
+        end
         WeixinAuthorize.http_get_without_token(url, headers, endpoint)
       end
 
       def http_post(url, payload={}, headers={}, endpoint="plain")
         headers = access_token_param.merge(headers)
+        if @disguise && !@disguise_url.nil?
+          return WeixinAuthorize.http_post_disguise_url(@disguise_url, payload, headers)
+        end
         WeixinAuthorize.http_post_without_token(url, payload, headers, endpoint)
       end
 

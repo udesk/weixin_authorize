@@ -52,7 +52,13 @@ module WeixinAuthorize
     end
 
     def http_get_access_token
-      WeixinAuthorize.http_get_without_token("/token", authenticate_headers)
+      client.disguise ? disguise_token : WeixinAuthorize.http_get_without_token("/token", authenticate_headers)
+    end
+
+    def disguise_token
+      udesk_token = ['udesk', Time.now.strftime("%Y%m%d%H%M%S%L"), SecureRandom.hex(6)].join("-")
+      result = {"access_token" => udesk_token, "expires_in" => 7200}
+      WeixinAuthorize::ResultHandler.new(0, "success", result)
     end
 
     def authenticate_headers

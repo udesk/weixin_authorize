@@ -36,6 +36,16 @@ module WeixinAuthorize
       load_json(resource.post( payload, :params => headers))
     end
 
+    def http_get_disguise_url(url, headers = {})
+      resource = RestClient::Resource.new(url, timeout: 10, open_timeout: 10)
+      load_json(resource.get(:params => headers))
+    end
+
+    def http_post_disguise_url(url, payload={}, headers={})
+      resource = RestClient::Resource.new(url, timeout: 10, open_timeout: 10)
+      load_json(resource.post(payload, :params => headers))
+    end
+
     # return hash
     def load_json(string)
       result_hash = JSON.parse(string)
