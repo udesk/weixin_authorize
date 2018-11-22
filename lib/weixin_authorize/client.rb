@@ -54,9 +54,15 @@ module WeixinAuthorize
       def http_post(url, payload={}, headers={}, endpoint="plain")
         headers = access_token_param.merge(headers)
         if @disguise && !@disguise_url.nil?
-          return WeixinAuthorize.http_post_disguise_url(@disguise_url, payload, headers)
+          post_url = get_disguise_url(@disguise_url, headers)
+          return WeixinAuthorize.http_post_disguise_url(post_url, payload, {})
         end
         WeixinAuthorize.http_post_without_token(url, payload, headers, endpoint)
+      end
+
+      def get_disguise_url(disguise_url, headers = {})
+        _url = headers.to_a.map{|x| "#{x[0]}=#{x[1]}" }.join("&")
+        disguise_url.include?('?') ? "#{disguise_url}&#{_url}" : "#{disguise_url}?#{_url}"
       end
 
       def security_redis_key(key)
