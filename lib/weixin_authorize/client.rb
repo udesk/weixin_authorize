@@ -46,7 +46,8 @@ module WeixinAuthorize
       def http_get(url, headers={}, endpoint="plain")
         headers = headers.merge(access_token_param)
         if @disguise && !@disguise_url.nil?
-          return WeixinAuthorize.http_get_disguise_url(@disguise_url, headers)
+          get_url = get_disguise_url(@disguise_url, headers)
+          return WeixinAuthorize.http_get_disguise_url(get_url, {})
         end
         WeixinAuthorize.http_get_without_token(url, headers, endpoint)
       end
