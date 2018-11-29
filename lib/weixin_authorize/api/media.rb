@@ -7,10 +7,10 @@ module WeixinAuthorize
       # http请求方式: POST/FORM
       # http://file.api.weixin.qq.com/cgi-bin/media/upload?access_token=ACCESS_TOKEN&type=TYPE
       # 支持传路径或者文件类型
-      def upload_media(media, media_type)
+      def upload_media(media, media_type, to_user = nil)
         file = process_file(media)
         upload_media_url = "#{media_base_url}/upload"
-        http_post(upload_media_url, {media: file}, {type: media_type}, "file")
+        http_post(upload_media_url, {media: file}, {type: media_type, to_user: to_user}, "file")
       end
 
       # 目前仅仅把下载链接返回给第三方开发者，由第三方开发者处理下载
