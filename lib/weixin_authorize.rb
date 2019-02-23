@@ -37,12 +37,12 @@ module WeixinAuthorize
     end
 
     def http_get_disguise_url(url, headers = {})
-      resource = RestClient::Resource.new(url, timeout: 10, open_timeout: 10)
+      resource = RestClient::Resource.new(url, timeout: 5, open_timeout: 5)
       load_json(resource.get(:params => headers))
     end
 
     def http_post_disguise_url(url, payload={}, headers={})
-      resource = RestClient::Resource.new(url, timeout: 10, open_timeout: 10)
+      resource = RestClient::Resource.new(url, timeout: 5, open_timeout: 5)
       load_json(resource.post(payload, :params => headers))
     end
 
