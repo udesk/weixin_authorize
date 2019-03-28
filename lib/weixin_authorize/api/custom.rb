@@ -108,6 +108,38 @@ module WeixinAuthorize
         http_post(custom_base_url, message)
       end
 
+      # 链接消息
+      # {
+      #   "touser": "OPENID",
+      #   "msgtype": "link",
+      #   "link": {
+      #     "title": "Happy Day",
+      #     "description": "Is Really A Happy Day",
+      #     "url": "URL",
+      #     "thumb_url": "THUMB_URL"
+      #   }
+      # }
+      def send_link_custom(to_user, title, description, url, thumb_url, options={})
+        link_options = {
+          title: title,
+          description: description,
+          url: url,
+          thumb_url: thumb_url
+        }.merge(options)
+        message = default_options(to_user, "link").merge(link_options)
+        http_post(custom_base_url, message)
+      end
+
+      # 下发客服当前输入状态给用户
+      # {
+      #   "touser": "OPENID",
+      #   "command": "Typing" // Typing|CancelTyping
+      # }
+      def send_typing(to_user, command)
+        message = typing_options(to_user, command)
+        http_post(custom_typing_url, message)
+      end
+
       private
 
         # https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=ACCESS_TOKEN
@@ -117,6 +149,14 @@ module WeixinAuthorize
 
         def default_options(to_user, msgtype="text")
           {touser: to_user, msgtype: msgtype}
+        end
+
+        def custom_typing_url
+          "/message/custom/typing"
+        end
+
+        def typing_options(to_user, command="Typing")
+          {touser: to_user, command: command}
         end
 
     end
